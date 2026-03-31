@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 必须对应 Mapper 接口的全类名 -->
+<mapper namespace="com.xxx.user.mapper.UserMapper">
+
+    <!-- 自定义结果映射（可选，字段名和实体属性一致时可省略） -->
+    <resultMap id="UserResultMap" type="com.xxx.user.entity.User">
+        <id column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="phone" property="phone"/>
+        <result column="create_time" property="createTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!-- 自定义查询：根据手机号查询用户 -->
+    <select id="selectByPhone" resultMap="UserResultMap">
+        SELECT * FROM user WHERE phone = #{phone} AND is_deleted = 0
+    </select>
+
+    <!-- 自定义更新：批量更新用户名 -->
+    <update id="batchUpdateUserName">
+        UPDATE user SET user_name = #{userName}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

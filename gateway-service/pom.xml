@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+        <groupId>com.example</groupId>
+        <artifactId>cloud-demo</artifactId>
+        <version>1.0.0</version> <!-- 与父工程版本保持一致 -->
+        <relativePath>../pom.xml</relativePath> <!-- 指明父工程 pom 的位置 -->
+    </parent>
+
+    <groupId>com.example</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+	<artifactId>gateway-service</artifactId>
+	<name>gateway-service</name>
+    <description>网关模块</description>
+
+	<!-- 核心依赖 -->
+	<dependencies>
+		<!-- Gateway 核心 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+
+		<!-- Nacos 服务发现（Gateway 要从 Nacos 查服务地址） -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+
+		<!-- 健康检查（可选，方便看服务状态） -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<!-- 热部署（开发用） -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- pom.xml 中添加 YAML 解析依赖 -->
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.33</version> <!-- 适配 Spring Boot 版本，一般2.7+用1.33即可 -->
+		</dependency>
+
+		<!-- Nacos 配置客户端（如果已加过可忽略） -->
+		<dependency>
+			<groupId>com.alibaba.nacos</groupId>
+			<artifactId>nacos-client</artifactId>
+			<version>2.2.3</version> <!-- 版本和你的 Nacos 服务端一致 -->
+		</dependency>
+
+		<!-- 替换原有 LoadBalancer 依赖，指定和 Spring Cloud 2021.0.5 匹配的版本 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+			<version>3.1.5</version> <!-- 必须和 spring-cloud-dependencies 2021.0.5 一致 -->
+		</dependency>
+
+		<!-- pom.xml 中添加JJWT依赖 -->
+
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-api</artifactId>
+				<version>0.11.5</version>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-impl</artifactId>
+				<version>0.11.5</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-jackson</artifactId>
+				<version>0.11.5</version>
+				<scope>runtime</scope>
+			</dependency>
+
+		<!-- Sentinel 接入 -->
+		<!-- Spring Cloud Alibaba Sentinel 核心依赖 -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+		</dependency>
+
+		<!-- Spring Cloud Gateway 适配 Sentinel 依赖（网关限流必备） -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+		</dependency>
+
+		<!-- 可选：控制台通信依赖，确保连接稳定 -->
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-transport-simple-http</artifactId>
+		</dependency>
+
+		<!-- Sentinel 核心包，包含 Tracer、EntryUtil 等 -->
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-core</artifactId>
+			<version>1.8.6</version> <!-- 保持和控制台版本一致 -->
+		</dependency>
+
+		<!-- Sentinel Gateway 适配 -->
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
+			<version>1.8.6</version>
+		</dependency>
+
+	</dependencies>
+
+	<!-- 打包插件 -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>16</source><target>16</target></configuration></plugin>
+		</plugins>
+	</build>
+</project>

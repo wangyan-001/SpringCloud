@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: order-service  # 服务名，和Nacos配置Data ID对应
+  cloud:
+    nacos:
+      # 配置中心核心配置（必须和服务发现用同一个命名空间）
+      config:
+        server-addr: localhost:8848
+        namespace: 0234c20e-500a-4c0e-b231-cbbeb2c676b5  # 新增：配置中心指定命名空间
+        file-extension: yml  # 新增：指定配置格式为yml
+        import-check:
+          enabled: false
+      # 服务发现配置
+      discovery:
+        server-addr: localhost:8848
+        namespace: 0234c20e-500a-4c0e-b231-cbbeb2c676b5  # 保持不变
+
+        ext-config:
+              - data-id: order-service.yml    # 主配置（默认会加载，也可以显式写出来）
+                group: DEFAULT_GROUP
+                refresh: true                 # 开启自动刷新
+              - data-id: order-feign.yml      # Feign 调用相关配置
+                group: DEFAULT_GROUP
+                refresh: true

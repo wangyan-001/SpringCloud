@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: test01-application
+  datasource:
+    # 核心：url 必须写全，包含时区等参数
+    url: jdbc:mysql://localhost:3306/test_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root  # 你的 MySQL 用户名（默认 root）
+    password: root  # 替换成你实际的MySQL密码
+    # 8.0+ 驱动必须用这个类名
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    org.springframework: INFO
+    org.example: DEBUG
+
+# 注意：yml 文件用 2 个空格缩进，不要用 tab！

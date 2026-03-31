@@ -1,0 +1,75 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: order-service
+  # ✅ datasource 必须和 cloud 平级！
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: 0234c20e-500a-4c0e-b231-cbbeb2c676b5
+        group: DEFAULT_GROUP
+        cluster-name: SH
+        metadata:
+          version: v1
+          env: dev
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+        ip-delete-timeout: 30000
+        naming-cache-load-at-start: true
+        naming-cache-expire-time: 3600000
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 0234c20e-500a-4c0e-b231-cbbeb2c676b5
+        group: DEFAULT_GROUP
+        file-extension: yml
+        import-check:
+          enabled: false
+
+  # RabbitMQ
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+# 监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+
+# Seata 已关闭
+seata:
+  enabled: false
+
+# Ribbon
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: true
+  NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule
+
+# 日志
+logging:
+  level:
+    com.example.order.feign: debug
+    com.alibaba.cloud.nacos: debug
+    com.alibaba.nacos.client.naming: debug

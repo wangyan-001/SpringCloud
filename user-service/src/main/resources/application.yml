@@ -1,0 +1,76 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: user-service
+  # Nacos 配置
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8000
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: 0234c20e-500a-4c0e-b231-cbbeb2c676b5
+  # 数据库配置（Hikari 原生，不引入 Druid）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://localhost:3306/test_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    # Hikari 连接池配置（可选，避免默认配置不足）
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+  # Redis 配置（修正缩进，归到 spring 下）
+  redis:
+    host: localhost
+    port: 6379
+    database: 1
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+    timeout: 10000ms
+  # 缓存配置（归到 spring 下）
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000ms
+      cache-null-values: true
+  # 移除 RedisAutoConfiguration 排除（避免不必要的冲突）
+  # autoconfigure:
+  #   exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.example.userservice.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# Seata 配置
+seata:
+  enabled: true
+  application-id: user-service
+  tx-service-group: my_test_tx_group
+  config:
+    type: file
+  registry:
+    type: file
+  service:
+    vgroup-mapping:
+      my_test_tx_group: default
+    grouplist:
+      default: 127.0.0.1:8091

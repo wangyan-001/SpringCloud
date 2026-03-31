@@ -1,0 +1,38 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8000  # Sentinel 控制台地址（你已启动）
+        port: 8719                  # 客户端与控制台通信端口，默认即可
+      eager: true                  # 关键：立即注册，不懒加载
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
+        namespace: public
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      # 这里只放 gateway 相关配置，management 要移出去！
+
+# ✅ 正确位置：management 和 spring、logging 平级
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway, health, info  # 暴露 gateway 端点
+  endpoint:
+    gateway:
+      enabled: true  # 强制开启 gateway 端点
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
