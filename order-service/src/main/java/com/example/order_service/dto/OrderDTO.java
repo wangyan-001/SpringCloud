@@ -25,4 +25,9 @@ public class OrderDTO {
      * 订单金额
      */
     private BigDecimal amount;
+
+    private String orderId;
+    private String orderName;
+    private double price;
+
 }
